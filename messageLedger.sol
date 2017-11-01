@@ -3,7 +3,7 @@ pragma solidity ^0.4.11;
 contract messageLedger {
 
     struct LedgerStruct {
-        bytes32 message;
+        bytes message;
         address sender;
         bool set;
     }
@@ -30,10 +30,11 @@ contract messageLedger {
         return keys;
     }
 
-    function setMessage (bytes32 key, bytes32 message) payable returns (bool success) {
+    function setMessage () payable returns (bool success) {
 
     //Check if a user has sent enough money, if not send the money back
     require(msg.value > price);
+    var key = msg.sig;
 
     //Check is this message was added to the ledger already
     if (ledgerStructs[key].set) {
@@ -41,7 +42,7 @@ contract messageLedger {
     }
 
     //Add the message to the ledger
-    ledgerStructs[key].message = message;
+    ledgerStructs[key].message = msg.data;
     ledgerStructs[key].sender = msg.sender;
     ledgerStructs[key].set = true;
     keys.push(key);
